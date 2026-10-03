@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAO VÀNG · 1976 — Lịch sử qua dữ liệu</title>
-<meta name="description" content="Scrollytelling 3D: hạt sáng biến hình kể câu chuyện Kỳ họp thứ nhất, Quốc hội khóa VI (24/6 – 3/7/1976) — từ hai Nhà nước đến một tên gọi.">
+<meta name="description" content="Scrollytelling: hạt sáng biến hình kể câu chuyện Kỳ họp thứ nhất, Quốc hội khóa VI (24/6 – 3/7/1976) — từ hai Nhà nước đến một tên gọi.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230b0906'/%3E%3Cpath d='M50 16l7.7 23.7h24.9L62.4 54l7.7 23.7L50 63.4 29.9 77.7l7.7-23.7L17.4 39.7h24.9z' fill='%23e2b13c'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,6 @@
 </head>
 <body>
 
-<!-- ── Ánh sáng nền ── -->
 <div class="light light--a" aria-hidden="true"></div>
 <div class="light light--b" aria-hidden="true"></div>
 <div class="light light--c" aria-hidden="true"></div>
@@ -34,50 +33,14 @@
   <span id="chipNo">01</span><i></i><span id="chipName">KHỞI ĐẦU</span>
 </div>
 
-<!-- Sân khấu hạt (ghim giữa) -->
 <div class="stage" aria-hidden="true">
   <canvas id="fx"></canvas>
   <canvas id="core"></canvas>
 </div>
 
-<!-- Thẻ nổi 3D theo cảnh -->
-<div class="deck" id="deck" aria-hidden="true">
-  <figure class="card pos-bl" data-scene="1" data-rot="-2.5">
-    <img src="assets/img/tank_30_4_1975.jpg" alt="Xe tăng tiến vào Dinh Độc Lập 30/4/1975" loading="lazy">
-    <figcaption class="mono">30·4·1975 — DINH ĐỘC LẬP · WIKIMEDIA</figcaption>
-  </figure>
-  <figure class="card pos-bl2" data-scene="1" data-rot="2">
-    <img src="assets/img/mittinh_5_1975.jpg" alt="Mít tinh mừng miền Nam giải phóng, Hà Nội 7/5/1975" loading="lazy">
-    <figcaption class="mono">7·5·1975 — MÍT TIN HÀ NỘI · NHÂN DÂN</figcaption>
-  </figure>
-
-  <figure class="card pos-br" data-scene="3" data-rot="-2">
-    <img src="assets/img/vote_woman.jpg" alt="Cử tri bỏ phiếu 25/4/1976" loading="lazy">
-    <figcaption class="mono">LÁ PHIẾU ĐẦU TIÊN · DANVIET</figcaption>
-  </figure>
-  <figure class="card pos-br2" data-scene="3" data-rot="2.4">
-    <img src="assets/img/qhb5.jpg" alt="Chiến sĩ bỏ phiếu cạnh bia ngày bầu cử 25/4/1976" loading="lazy">
-    <figcaption class="mono">BIA “NGÀY BẦU CỬ 25·4·1976” · NHÂN DÂN</figcaption>
-  </figure>
-
-  <figure class="card pos-br" data-scene="4" data-rot="2.2">
-    <img src="assets/img/hoi_truong_ba_dinh.jpg" alt="Hội trường Ba Đình, Hà Nội" loading="lazy">
-    <figcaption class="mono">HỘI TRƯỜNG BA ĐÌNH · WIKIMEDIA</figcaption>
-  </figure>
-  <figure class="card pos-br2" data-scene="4" data-rot="-2">
-    <img src="assets/img/session_1976.jpg" alt="Quốc huy trên bục phát biểu, kỳ họp thứ nhất" loading="lazy">
-    <figcaption class="mono">BỤC PHÁT BIỂU, KỲ HỌP THỨ NHẤT · TTXVN</figcaption>
-  </figure>
-
-  <figure class="card pos-bwl" data-scene="5" data-rot="-1.6">
-    <img src="assets/img/bieuquyet_1976.jpg" alt="Quốc hội biểu quyết thông qua Quốc kỳ, Quốc huy, Quốc ca" loading="lazy">
-    <figcaption class="mono">BIỂU QUYẾT QUỐC KỲ, QUỐC HUY, QUỐC CA · NHÂN DÂN</figcaption>
-  </figure>
-</div>
-
-<!-- Các tấm chữ -->
 <div class="panels" id="panels">
 
+  <!-- 0 · MỞ ĐẦU -->
   <section class="panel panel--center" data-scene="0">
     <p class="panel__kicker mono">SCROLLYTELLING · TƯ LIỆU 1975 – 1976</p>
     <h1 class="panel__title">MỘT<br>NƯỚC</h1>
@@ -86,105 +49,197 @@
     <p class="panel__cue mono">CUỘN ĐỂ BIẾN HÌNH ↓</p>
   </section>
 
+  <!-- 1 · HAI NHÀ NƯỚC -->
   <section class="panel" data-scene="1">
-    <p class="panel__kicker mono">01 · SAU MÙA XUÂN 1975</p>
-    <h2>Hai Nhà nước,<br>một đất nước</h2>
-    <p class="panel__body">Đất nước giải phóng nhưng về pháp lý vẫn có hai chính phủ:
-    Việt Nam Dân chủ Cộng hòa và Cộng hòa miền Nam Việt Nam.
-    Nguyện vọng bậc nhất của đồng bào cả nước: thống nhất về mặt Nhà nước.</p>
-    <div class="panel__stats">
-      <div><b>02</b><span>chính phủ</span></div>
-      <div><b>02</b><span>miền Nam — Bắc</span></div>
-      <div><b>01</b><span>nguyện vọng</span></div>
+    <div class="panel__col">
+      <p class="panel__kicker mono">01 · SAU MÙA XUÂN 1975</p>
+      <h2>Hai Nhà nước,<br>một đất nước</h2>
+      <p class="panel__body">Sau đại thắng Mùa xuân 1975, non sông thu về một mối. Nhưng về
+      mặt pháp lý, trên đất nước vẫn tồn tại <strong>hai chính phủ</strong>: Chính phủ
+      <strong>Việt Nam Dân chủ Cộng hòa</strong> ở miền Bắc và Chính phủ Cách mạng lâm thời
+      <strong>Cộng hòa miền Nam Việt Nam</strong> ở miền Nam.</p>
+      <p class="panel__body">Nhiệm vụ cấp bách mà Ban Chấp hành Trung ương Đảng Lao động
+      Việt Nam đề ra là phải thực hiện thống nhất nước nhà <strong>về mặt Nhà nước</strong> —
+      đây cũng là nguyện vọng tha thiết bậc nhất của đồng bào cả nước.</p>
+      <div class="panel__stats">
+        <div><b>02</b><span>chính phủ</span></div>
+        <div><b>02</b><span>miền Nam — Bắc</span></div>
+        <div><b>30·4</b><span>1975 — ngày giải phóng</span></div>
+      </div>
+    </div>
+    <div class="panel__media">
+      <figure class="pm pm--main"><img src="assets/img/tank_30_4_1975.jpg" alt="Xe tăng tiến vào cổng Dinh Độc Lập, trưa 30/4/1975" loading="lazy">
+        <figcaption class="mono">30·4·1975 — XE TẠNG DINH ĐỘC LẬP · WIKIMEDIA COMMONS</figcaption></figure>
+      <figure class="pm pm--sub"><img src="assets/img/mittinh_5_1975.jpg" alt="Lãnh đạo dự mít tinh mừng miền Nam hoàn toàn giải phóng, Hà Nội 7/5/1975" loading="lazy">
+        <figcaption class="mono">7·5·1975 — MÍT TIN HÀ NỘI · BÁO NHÂN DÂN</figcaption></figure>
     </div>
   </section>
 
-  <section class="panel panel--right" data-scene="2">
-    <p class="panel__kicker mono">02 · SÀI GÒN, 15 – 21/11/1975</p>
-    <h2>Hiệp thương chọn<br>một ngày chung</h2>
-    <p class="panel__body">“Cần tổ chức sớm cuộc Tổng tuyển cử trên toàn bộ lãnh thổ Việt Nam
-    để bầu ra Quốc hội chung cho cả nước.” Hội đồng bầu cử toàn quốc gồm 22 đại biểu,
-    mỗi miền 11 người.</p>
-    <div class="panel__stats">
-      <div><b>22</b><span>đại biểu Hội đồng bầu cử</span></div>
-      <div><b>11+11</b><span>hai miền</span></div>
-      <div><b>228</b><span>chỉ thị CT/TW · 3/1/1976</span></div>
+  <!-- 2 · HIỆP THƯƠNG -->
+  <section class="panel panel--flip" data-scene="2">
+    <div class="panel__col">
+      <p class="panel__kicker mono">02 · SÀI GÒN, 15 – 21/11/1975</p>
+      <h2>Hiệp thương chọn<br>một ngày chung</h2>
+      <p class="panel__body">Từ 15 đến 21/11/1975, đại biểu nhân dân hai miền Nam – Bắc tổ chức
+      <strong>Hội nghị Hiệp thương chính trị</strong> tại thành phố Sài Gòn để bàn vấn đề
+      then chốt, trọng đại: thống nhất Tổ quốc.</p>
+      <blockquote class="panel__quote">“Cần tổ chức sớm cuộc Tổng tuyển cử trên toàn bộ lãnh thổ
+      Việt Nam để bầu ra Quốc hội chung cho cả nước… Quốc hội đó sẽ xác định thể chế Nhà nước,
+      bầu ra các cơ quan lãnh đạo của Nhà nước và quy định Hiến pháp mới.”</blockquote>
+      <p class="panel__cite mono">— THÔNG BÁO HỘI NGHỊ HIỆP THƯƠNG, 21/11/1975</p>
+      <div class="panel__stats">
+        <div><b>228-CT/TW</b><span>chỉ thị Bộ Chính trị · 3/1/1976</span></div>
+        <div><b>25·4·1976</b><span>ngày Tổng tuyển cử chung</span></div>
+      </div>
+    </div>
+    <div class="panel__media">
+      <div class="paper">
+        <p class="paper__head mono">HỘI ĐỒNG BẦU CỬ TOÀN QUỐC</p>
+        <p class="paper__big">22 đại biểu</p>
+        <ul class="paper__list">
+          <li>Mỗi miền cử <strong>11 đại biểu</strong></li>
+          <li>Chủ tịch: <strong>Trường Chinh</strong></li>
+          <li>Phó Chủ tịch: <strong>Phạm Hùng</strong></li>
+          <li>Nhiệm vụ: hướng dẫn, giám sát bỏ phiếu; tổng kết, tuyên bố kết quả;
+          cấp giấy chứng nhận trúng cử</li>
+        </ul>
+        <p class="paper__foot mono">THEO CHỈ THỊ 228-CT/TW NGÀY 3·1·1976: BẦU CỬ “TRONG CẢ NƯỚC
+        CÙNG MỘT NGÀY” — PHỔ THÔNG, BÌNG ĐẲNG, TRỰC TIẾP, BỎ PHIẾU KÍN</p>
+      </div>
     </div>
   </section>
 
+  <!-- 3 · TỔNG TUYỂN CỬ -->
   <section class="panel" data-scene="3">
-    <p class="panel__kicker mono">03 · 25/4/1976</p>
-    <h2>Cả nước cùng<br>bỏ một lá phiếu</h2>
-    <p class="panel__body">Lần đầu tiên, cử tri hai miền cùng đi bầu một Quốc hội chung —
-    trúng cử ngay vòng đầu, không nơi nào phải bầu lại.</p>
-    <div class="panel__stats">
-      <div><b>23 triệu+</b><span>cử tri</span></div>
-      <div><b>98,77%</b><span>đi bầu</span></div>
-      <div><b>605</b><span>ứng cử</span></div>
-      <div><b>492</b><span>trúng cử</span></div>
+    <div class="panel__col">
+      <p class="panel__kicker mono">03 · 25/4/1976</p>
+      <h2>Cả nước cùng<br>bỏ một lá phiếu</h2>
+      <p class="panel__body">Ngày 25/4/1976, hơn <strong>23 triệu cử tri</strong> trên toàn bộ
+      lãnh thổ cùng nô nức làm nghĩa vụ công dân — thực sự là ngày hội lớn của toàn thể dân tộc.
+      Cử tri đã bầu đủ <strong>492 đại biểu ngay trong vòng đầu</strong>, không nơi nào phải
+      bầu lại hoặc bầu thêm.</p>
+      <div class="panel__stats">
+        <div><b>98,77%</b><span>đi bầu cả nước</span></div>
+        <div><b>605</b><span>người ứng cử</span></div>
+        <div><b>249+243</b><span>trúng cử Bắc + Nam</span></div>
+      </div>
+      <div class="mchart">
+        <h5 class="mono">TỶ LỆ CỬ TRI ĐI BẦU THEO MIỀN</h5>
+        <div class="mchart__row"><span class="mchart__name">Miền Bắc</span><div class="mchart__track"><div class="mchart__fill" style="--w:99.36%"></div></div><span class="mchart__val mono">99,36%</span></div>
+        <div class="mchart__row mchart__row--hot"><span class="mchart__name">Cả nước</span><div class="mchart__track"><div class="mchart__fill" style="--w:98.77%"></div></div><span class="mchart__val mono">98,77%</span></div>
+        <div class="mchart__row"><span class="mchart__name">Miền Nam</span><div class="mchart__track"><div class="mchart__fill" style="--w:98.59%"></div></div><span class="mchart__val mono">98,59%</span></div>
+        <p class="mchart__src mono">VĂN KIỆN QUỐC HỘI TOÀN TẬP · TẬP 5</p>
+      </div>
     </div>
-    <div class="mchart">
-      <h5 class="mono">TỶ LỆ CỬ TRI ĐI BẦU THEO MIỀN</h5>
-      <div class="mchart__row"><span class="mchart__name">Miền Bắc</span><div class="mchart__track"><div class="mchart__fill" style="--w:99.36%"></div></div><span class="mchart__val mono">99,36%</span></div>
-      <div class="mchart__row mchart__row--hot"><span class="mchart__name">Cả nước</span><div class="mchart__track"><div class="mchart__fill" style="--w:98.77%"></div></div><span class="mchart__val mono">98,77%</span></div>
-      <div class="mchart__row"><span class="mchart__name">Miền Nam</span><div class="mchart__track"><div class="mchart__fill" style="--w:98.59%"></div></div><span class="mchart__val mono">98,59%</span></div>
-      <p class="mchart__src mono">VĂN KIỆN QUỐC HỘI TOÀN TẬP · TẬP 5</p>
-    </div>
-  </section>
-
-  <section class="panel panel--right" data-scene="4">
-    <p class="panel__kicker mono">04 · HÀ NỘI, 24/6/1976</p>
-    <h2>Khai mạc tại<br>Hội trường Ba Đình</h2>
-    <p class="panel__body">“Kỳ họp Quốc hội lần này là một cái mốc trong lịch sử phát triển
-    của Nhà nước ta.” — Luật sư Nguyễn Hữu Thọ, diễn văn khai mạc.</p>
-    <div class="panel__stats">
-      <div><b>492</b><span>đại biểu</span></div>
-      <div><b>38</b><span>tỉnh, thành phố</span></div>
-      <div><b>36</b><span>thành viên Đoàn Chủ tịch</span></div>
-    </div>
-    <div class="mchart">
-      <h5 class="mono">CƠ CẤU 492 ĐẠI BIỂU TRÚNG CỬ</h5>
-      <div class="mchart__row"><span class="mchart__name">Cán bộ chính trị</span><div class="mchart__track"><div class="mchart__fill" style="--w:95.5%"></div></div><span class="mchart__val mono">28,66%</span></div>
-      <div class="mchart__row mchart__row--hot"><span class="mchart__name">Nông dân</span><div class="mchart__track"><div class="mchart__fill" style="--w:67.8%"></div></div><span class="mchart__val mono">20,33%</span></div>
-      <div class="mchart__row"><span class="mchart__name">Trí thức</span><div class="mchart__track"><div class="mchart__fill" style="--w:61.7%"></div></div><span class="mchart__val mono">18,50%</span></div>
-      <div class="mchart__row"><span class="mchart__name">Công nhân</span><div class="mchart__track"><div class="mchart__fill" style="--w:54.2%"></div></div><span class="mchart__val mono">16,26%</span></div>
-      <div class="mchart__row"><span class="mchart__name">Quân nhân</span><div class="mchart__track"><div class="mchart__fill" style="--w:36.6%"></div></div><span class="mchart__val mono">10,97%</span></div>
-      <div class="mchart__row"><span class="mchart__name">Nhân sĩ, tôn giáo</span><div class="mchart__track"><div class="mchart__fill" style="--w:13.5%"></div></div><span class="mchart__val mono">4,06%</span></div>
-      <p class="mchart__src mono">26,21% NỮ · 14,28% DÂN TỘC THIỂU SỐ · 94 NGOÀI ĐẢNG · 249 BẮC + 243 NAM · THANG CỘT: 0–30%</p>
+    <div class="panel__media">
+      <figure class="pm pm--main"><img src="assets/img/vote_woman.jpg" alt="Cử tri bỏ lá phiếu tại cuộc Tổng tuyển cử 25/4/1976" loading="lazy">
+        <figcaption class="mono">LÁ PHIẾU ĐẦU TIÊN CỦA ĐẤT NƯỚC THỐNG NHẤT · DANVIET</figcaption></figure>
+      <figure class="pm pm--sub"><img src="assets/img/qhb5.jpg" alt="Chiến sĩ bỏ phiếu cạnh bia ghi ngày bầu cử 25/4/1976" loading="lazy">
+        <figcaption class="mono">BIA “NGÀY BẦU CỬ 25·4·1976” · BÁO NHÂN DÂN</figcaption></figure>
     </div>
   </section>
 
+  <!-- 4 · KHAI MẠC -->
+  <section class="panel panel--flip" data-scene="4">
+    <div class="panel__col">
+      <p class="panel__kicker mono">04 · HÀ NỘI, 24/6/1976</p>
+      <h2>Khai mạc tại<br>Hội trường Ba Đình</h2>
+      <p class="panel__body">Kỳ họp thứ nhất Quốc hội khóa VI khai mạc với <strong>492 đại biểu
+      của 38 tỉnh, thành phố</strong>. Đoàn Chủ tịch điều hành kỳ họp gồm 36 thành viên, trong đó
+      có Tôn Đức Thắng, Nguyễn Lương Bằng, Lê Duẩn, Trường Chinh, Phạm Văn Đồng, Phạm Hùng,
+      Nguyễn Hữu Thọ, Huỳnh Tấn Phát…</p>
+      <blockquote class="panel__quote">“Kỳ họp Quốc hội lần này là một cái mốc trong lịch sử
+      phát triển của Nhà nước ta… nhân dân ta nhiệt liệt hoan nghênh Quốc hội mới và đặt nhiều
+      hy vọng vào Quốc hội.”</blockquote>
+      <p class="panel__cite mono">— LUẬT SƯ NGUYỄN HỮU THỌ, DIỄN VĂN KHAI MẠC</p>
+      <div class="mchart">
+        <h5 class="mono">CƠ CẤU 492 ĐẠI BIỂU TRÚNG CỬ</h5>
+        <div class="mchart__row"><span class="mchart__name">Cán bộ chính trị</span><div class="mchart__track"><div class="mchart__fill" style="--w:95.5%"></div></div><span class="mchart__val mono">28,66%</span></div>
+        <div class="mchart__row mchart__row--hot"><span class="mchart__name">Nông dân</span><div class="mchart__track"><div class="mchart__fill" style="--w:67.8%"></div></div><span class="mchart__val mono">20,33%</span></div>
+        <div class="mchart__row"><span class="mchart__name">Trí thức</span><div class="mchart__track"><div class="mchart__fill" style="--w:61.7%"></div></div><span class="mchart__val mono">18,50%</span></div>
+        <div class="mchart__row"><span class="mchart__name">Công nhân</span><div class="mchart__track"><div class="mchart__fill" style="--w:54.2%"></div></div><span class="mchart__val mono">16,26%</span></div>
+        <div class="mchart__row"><span class="mchart__name">Quân nhân cách mạng</span><div class="mchart__track"><div class="mchart__fill" style="--w:36.6%"></div></div><span class="mchart__val mono">10,97%</span></div>
+        <div class="mchart__row"><span class="mchart__name">Nhân sĩ, tôn giáo</span><div class="mchart__track"><div class="mchart__fill" style="--w:13.5%"></div></div><span class="mchart__val mono">4,06%</span></div>
+        <p class="mchart__src mono">26,21% NỮ · 14,28% DÂN TỘC THIỂU SỐ · 94 NGOÀI ĐẢNG · THANG CỘT 0–30%</p>
+      </div>
+    </div>
+    <div class="panel__media">
+      <figure class="pm pm--main"><img src="assets/img/session_1976.jpg" alt="Quốc huy trên bục phát biểu tại kỳ họp thứ nhất, Quốc hội khóa VI" loading="lazy">
+        <figcaption class="mono">QUỐC HUY TẠI KỲ HỌP THỨ NHẤT · TTXVN</figcaption></figure>
+      <figure class="pm pm--sub"><img src="assets/img/hoi_truong_ba_dinh.jpg" alt="Toàn cảnh Hội trường Ba Đình, Hà Nội" loading="lazy">
+        <figcaption class="mono">HỘI TRƯỜNG BA ĐÌNH · WIKIMEDIA COMMONS</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 5 · QUYẾT NGHỊ 2/7 -->
   <section class="panel" data-scene="5">
-    <p class="panel__kicker mono">05 · NGÀY 2/7/1976</p>
-    <h2>Quốc kỳ đỏ,<br>sao vàng năm cánh</h2>
-    <p class="panel__body">Trong ngày 2/7/1976, Quốc hội thông qua 6 nghị quyết quan trọng.
-    Nghị quyết đầu tiên quyết định: tên nước, quốc kỳ, quốc huy, thủ đô và quốc ca
-    của nước Việt Nam thống nhất.</p>
-    <div class="panel__stats">
-      <div><b>06</b><span>nghị quyết</span></div>
-      <div><b>05</b><span>điều về biểu tượng</span></div>
-      <div><b>02·07</b><span>1976</span></div>
+    <div class="panel__col">
+      <p class="panel__kicker mono">05 · NGÀY 2/7/1976</p>
+      <h2>Nghị quyết đầu tiên:<br>gọi tên đất nước</h2>
+      <p class="panel__body">Trong ngày 2/7/1976, Quốc hội nhất trí thông qua <strong>6 nghị quyết
+      quan trọng</strong>. Nghị quyết đầu tiên — về tên nước, quốc kỳ, quốc huy, thủ đô và
+      quốc ca — gồm 5 điểm:</p>
+      <ol class="qlist">
+        <li><span class="mono">1</span><p><strong>Tên nước:</strong> nước Cộng hòa xã hội chủ nghĩa Việt Nam</p></li>
+        <li><span class="mono">2</span><p><strong>Quốc kỳ:</strong> nền đỏ, ở giữa có ngôi sao vàng năm cánh</p></li>
+        <li><span class="mono">3</span><p><strong>Quốc huy:</strong> sao vàng, bông lúa, nửa bánh xe răng cưa</p></li>
+        <li><span class="mono">4</span><p><strong>Thủ đô:</strong> Hà Nội</p></li>
+        <li><span class="mono">5</span><p><strong>Quốc ca:</strong> bài Tiến quân ca</p></li>
+      </ol>
+      <p class="panel__cite mono">TM. ĐOÀN CHỦ TỊCH — TRƯỜNG CHINH · HÀ NỘI, 02·07·1976</p>
+    </div>
+    <div class="panel__media">
+      <figure class="pm pm--main"><img src="assets/img/bieuquyet_1976.jpg" alt="Quốc hội biểu quyết thông qua Quốc kỳ, Quốc huy, Quốc ca tại kỳ họp thứ nhất" loading="lazy">
+        <figcaption class="mono">QUỐC HỘI BIỂU QUYẾT QUỐC KỲ, QUỐC HUY, QUỐC CA · BÁO NHÂN DÂN</figcaption></figure>
+      <figure class="pm pm--sub"><img src="assets/img/hoi_truong_ba_dinh.jpg" alt="Hội trường Ba Đình, nơi kỳ họp diễn ra" loading="lazy">
+        <figcaption class="mono">HỘI TRƯỜNG BA ĐÌNH · WIKIMEDIA COMMONS</figcaption></figure>
     </div>
   </section>
 
-  <section class="panel panel--right" data-scene="6">
-    <p class="panel__kicker mono">06 · QUỐC HUY</p>
-    <h2>Ngôi sao giữa<br>bông lúa và bánh xe</h2>
-    <p class="panel__body">“Quốc huy hình tròn, ở giữa có ngôi sao vàng năm cánh, chung quanh
-    có bông lúa, ở dưới có nửa bánh xe răng cưa và dòng chữ Cộng hòa xã hội chủ nghĩa
-    Việt Nam.” Thủ đô: Hà Nội. Quốc ca: Tiến quân ca.</p>
-    <div class="panel__stats">
-      <div><b>HÀ NỘI</b><span>thủ đô</span></div>
-      <div><b>TIẾN QUÂN CA</b><span>quốc ca</span></div>
-      <div><b>TP.HCM</b><span>tên mới của Sài Gòn – Gia Định</span></div>
+  <!-- 6 · NHÀ NƯỚC MỚI -->
+  <section class="panel panel--flip" data-scene="6">
+    <div class="panel__col">
+      <p class="panel__kicker mono">06 · NHÀ NƯỚC THỐNG NHẤT</p>
+      <h2>Bộ máy Nhà nước<br>đầy đủ lần đầu tiên</h2>
+      <p class="panel__body">Quốc hội bầu <strong>Tôn Đức Thắng</strong> làm Chủ tịch nước;
+      <strong>Nguyễn Lương Bằng</strong> và <strong>Nguyễn Hữu Thọ</strong> làm Phó Chủ tịch nước;
+      <strong>Trường Chinh</strong> làm Chủ tịch Quốc hội; <strong>Phạm Văn Đồng</strong> làm
+      Thủ tướng Chính phủ cùng 7 Phó Thủ tướng: Phạm Hùng, Huỳnh Tấn Phát, Võ Nguyên Giáp,
+      Nguyễn Duy Trinh, Lê Thanh Nghị, Võ Chí Công, Đỗ Mười.</p>
+      <p class="panel__body">Thành phố Sài Gòn – Gia Định chính thức được đặt tên là
+      <strong>thành phố Hồ Chí Minh</strong>. Khi chưa có Hiến pháp mới, Nhà nước hoạt động trên
+      cơ sở Hiến pháp 1959; Ủy ban Dự thảo Hiến pháp gồm 36 thành viên do Trường Chinh làm Chủ tịch.</p>
+      <div class="panel__stats">
+        <div><b>06</b><span>nghị quyết thông qua</span></div>
+        <div><b>36</b><span>Ủy ban Dự thảo Hiến pháp</span></div>
+        <div><b>21+2</b><span>ủy viên Ủy ban Thường vụ</span></div>
+      </div>
+    </div>
+    <div class="panel__media">
+      <div class="paper">
+        <p class="paper__head mono">TỔ CHỨC NHÀ NƯỚC KHI CHƯA CÓ HIẾN PHÁP MỚI</p>
+        <ul class="paper__list paper__list--grid">
+          <li>Quốc hội</li>
+          <li>Chủ tịch nước &amp; 2 Phó Chủ tịch</li>
+          <li>Ủy ban Thường vụ Quốc hội</li>
+          <li>Hội đồng Chính phủ</li>
+          <li>Hội đồng Quốc phòng</li>
+          <li>Tòa án nhân dân tối cao</li>
+          <li>Viện kiểm sát nhân dân tối cao</li>
+        </ul>
+        <p class="paper__foot mono">CƠ SỞ: HIẾN PHÁP 1959 · CHỜ HIẾN PHÁP MỚI</p>
+      </div>
     </div>
   </section>
 
+  <!-- 7 · KẾT -->
   <section class="panel panel--center" data-scene="7">
-    <p class="panel__kicker mono">50 NĂM SAU</p>
+    <p class="panel__kicker mono">03·7·1976 BẾ MẠC — 50 NĂM SAU</p>
     <h1 class="panel__title panel__title--sm panel__title--gold">MỘT CÁI TÊN,<br>ĐI SUỐT HÀNH TRÌNH</h1>
-    <p class="panel__lead">Từ 24/6/1976 — nhiệm kỳ khóa VI đến 23/6/1981 — đến Hiến pháp 1980
-    và đến hôm nay: đất nước chưa bao giờ có được cơ đồ, tiềm lực, vị thế như ngày nay.</p>
+    <p class="panel__lead">Kỳ họp bế mạc ngày 3/7/1976, hoàn thành thống nhất đất nước về mặt
+    Nhà nước. Quốc hội khóa VI hoạt động đến 23/6/1981; ngày 18/12/1980, tại kỳ họp thứ bảy,
+    Quốc hội thông qua Hiến pháp 1980 — Hiến pháp đầu tiên của nước Cộng hòa xã hội chủ nghĩa
+    Việt Nam.</p>
     <div class="panel__stats panel__stats--center">
       <div><b>50</b><span>năm</span></div>
       <div><b>6</b><span>nghị quyết khai sinh</span></div>
@@ -193,12 +248,12 @@
     <div class="people-strip">
       <figure><img src="assets/img/ton_duc_thang.jpg" alt="Tôn Đức Thắng" loading="lazy"><figcaption class="mono">TÔN ĐỨC THẮNG<br><span>CHỦ TỊCH NƯỚC</span></figcaption></figure>
       <figure><img src="assets/img/truong_chinh.jpg" alt="Trường Chinh" loading="lazy"><figcaption class="mono">TRƯỜNG CHINH<br><span>CHỦ TỊCH QUỐC HỘI</span></figcaption></figure>
-      <figure><img src="assets/img/pham_van_dong.jpg" alt="Phạm Văn Đồng" loading="lazy"><figcaption class="mono">PHẠM VĂN ĐỒNG<br><span>THỦ TƯỚNG</span></figcaption></figure>
+      <figure><img src="assets/img/pham_van_dong.jpg" alt="Phạm Văn Đồng" loading="lazy"><figcaption class="mono">PHẠM VĂN ĐỒNG<br><span>THỦ TƯỚC</span></figcaption></figure>
       <figure><img src="assets/img/nguyen_huu_tho.jpg" alt="Nguyễn Hữu Thọ" loading="lazy"><figcaption class="mono">NGUYỄN HỮU THỌ<br><span>PHÓ CHỦ TỊCH NƯỚC</span></figcaption></figure>
       <figure><img src="assets/img/le_duan.jpg" alt="Lê Duẩn" loading="lazy"><figcaption class="mono">LÊ DUẨN<br><span>BÁO CÁO CHÍNH TRỊ</span></figcaption></figure>
     </div>
     <p class="panel__cue mono"><a href="#" id="toTop">↑ QUAY VỀ ĐẦU</a></p>
-    <p class="panel__src mono">TƯ LIỆU: DANGCONGSAN.VN (TS. BÙI NGỌC THANH) · WIKIPEDIA · VIETNAMPLUS · QUOCHOI.VN · ẢNH: TTXVN, NHÂN DÂN, WIKIMEDIA COMMONS</p>
+    <p class="panel__src mono">TƯ LIỆU: DANGCONGSAN.VN (TS. BÙI NGỌC THANH) · WIKIPEDIA · VIETNAMPLUS · QUOCHOI.VN · ẢNH: TTXVN, NHÂN DÂN, WIKIMEDIA COMMONS, DANVIET</p>
   </section>
 
 </div>

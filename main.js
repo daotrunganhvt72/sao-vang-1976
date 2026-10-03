@@ -119,10 +119,10 @@
 
   /* ═══════════ 8 CẢNH ═══════════ */
   const SCENES = [
-    { name: "KHỞI ĐẦU", objX: .5, amp: .5, rot: .10, make: (rng, n) =>
+    { name: "KHỞI ĐẦU", objX: .5, amp: .5, size: 1, dim: 1, rot: .10, make: (rng, n) =>
         starPts(rng, 0, 0, .58, .235, 0, n, .55, C.gold, C.gold2) },
 
-    { name: "HAI NHÀ NƯỚC", objX: .585, amp: .3, rot: 0, make: (rng, n) => {
+    { name: "HAI NHÀ NƯỚC", objX: .5, amp: .3, size: .6, dim: .92, rot: 0, make: (rng, n) => {
         const h = Math.floor(n / 2);
         const A = ringPts(rng, -.52, 0, .34, h, .05, C.gold2, .3);
         const B = ringPts(rng, .52, 0, .34, n - h, .05, C.red, .3);
@@ -132,7 +132,7 @@
         return { pts, col };
       } },
 
-    { name: "HIỆP THƯƠNG", objX: .415, amp: .18, rot: 0, make: (rng, n) => {
+    { name: "HIỆP THƯƠNG", objX: .5, amp: .18, size: .6, dim: .92, rot: 0, make: (rng, n) => {
         const pts = new Float32Array(n * 2), col = new Float32Array(n * 3);
         for (let i = 0; i < n; i++) {
           const cl = i % 22;
@@ -146,11 +146,11 @@
         return { pts, col };
       } },
 
-    { name: "TỔNG TUYỂN CỬ", objX: .585, amp: .25, rot: 0, make: (rng, n) => polyBallot(rng, n) },
+    { name: "TỔNG TUYỂN CỬ", objX: .5, amp: .25, size: .6, dim: .92, rot: 0, make: (rng, n) => polyBallot(rng, n) },
 
-    { name: "KHAI MẠC", objX: .415, amp: .3, rot: 0, make: (rng, n) => hallShape(rng, n) },
+    { name: "KHAI MẠC", objX: .5, amp: .3, size: .6, dim: .92, rot: 0, make: (rng, n) => hallShape(rng, n) },
 
-    { name: "QUỐC KỲ", objX: .585, amp: .18, rot: 0, make: (rng, n) => {
+    { name: "QUỐC KỲ", objX: .5, amp: .18, size: .6, dim: .92, rot: 0, make: (rng, n) => {
         const field = Math.round(n * .74), st = n - field;
         const F = rectFillPts(rng, -.92, -.4, .52, .4, field, C.redD);
         const S = starPts(rng, -.2, 0, .2, .082, 0, st, .5, C.gold, C.bright);
@@ -160,10 +160,10 @@
         return { pts, col };
       } },
 
-    { name: "QUỐC HUY", objX: .415, amp: .3, rot: .05, make: (rng, n) =>
+    { name: "QUỐC HUY", objX: .5, amp: .3, size: .6, dim: .92, rot: .05, make: (rng, n) =>
         emblemShape(rng, n) },
 
-    { name: "MỘT CÁI TÊN", objX: .5, amp: .1, rot: 0, make: (rng, n) => textShape("1976", rng, n) }
+    { name: "MỘT CÁI TÊN", objX: .5, amp: .1, size: 1, dim: 1, rot: 0, make: (rng, n) => textShape("1976", rng, n) }
   ];
 
   function polyBallot(rng, n) {
@@ -423,22 +423,27 @@
       const dy = (1 - inP) * 44 - outP * 44;
       el.style.opacity = op.toFixed(3);
       el.style.visibility = op > .02 ? "visible" : "hidden";
-      el.style.transform = el.classList.contains("panel--center")
-        ? `translate(-50%, calc(-50% + ${dy.toFixed(1)}px))`
-        : `translateY(calc(-50% + ${dy.toFixed(1)}px))`;
+      el.style.transform = `translate(-50%, calc(-50% + ${dy.toFixed(1)}px))`;
       if (op > .3) el.classList.add("is-in");
       else if (op < .04) el.classList.remove("is-in");
     }
 
-    /* ── mô hình: vị trí + nghiêng 3D ── */
-    const objXc = SCENES[ki].objX + (SCENES[k2].objX - SCENES[ki].objX) * e;
-    const CXc = W * objXc;
+    /* ── mô hình: kích thước điểm nhấn + nghiêng 3D ── */
+    const sizeCur = SCENES[ki].size + (SCENES[k2].size - SCENES[ki].size) * e;
+    const dimCur = SCENES[ki].dim + (SCENES[k2].dim - SCENES[ki].dim) * e;
+    const Rcur = R * sizeCur;
+    const CXc = W * SCENES[ki].objX;
     const CYc = CY;
     const ampA = SCENES[ki].amp, ampB = SCENES[k2].amp;
     const angA = ampA * Math.sin(time * .4 + ki * 1.3) + time * .02;
     const angB = ampB * Math.sin(time * .4 + k2 * 1.3) + time * .02;
     const glow = $("#objGlow");
-    if (glow) { glow.style.left = (CXc - R * 1.45) + "px"; glow.style.top = (CY - R * 1.45) + "px"; }
+    if (glow) {
+      const gs = Math.round(Rcur * 3);
+      glow.style.width = glow.style.height = gs + "px";
+      glow.style.left = (CXc - gs / 2) + "px";
+      glow.style.top = (CYc - gs / 2) + "px";
+    }
 
     /* ── vẽ hạt (có chiều sâu Z + phối cảnh) ── */
     const A = shapes[ki].pts, B = shapes[k2].pts;
@@ -468,14 +473,14 @@
       const wob = Math.sin(time * .7 + phase[i]) * .007;
 
       const per = 1.9 / (1.9 + Z);          // phối cảnh
-      const px = CXc + (X + wob + ox) * R * per;
-      const py = CYc + (Y + oy) * R * per;
+      const px = CXc + (X + wob + ox) * Rcur * per;
+      const py = CYc + (Y + oy) * Rcur * per;
 
       const cr = cA[i * 3] + (cB[i * 3] - cA[i * 3]) * t;
       const cg = cA[i * 3 + 1] + (cB[i * 3 + 1] - cA[i * 3 + 1]) * t;
       const cb2 = cA[i * 3 + 2] + (cB[i * 3 + 2] - cA[i * 3 + 2]) * t;
       const tw = .72 + .28 * Math.sin(time * 1.4 + phase[i] * 3);
-      const a = .9 * tw * (.65 + .35 * per);
+      const a = .9 * tw * (.65 + .35 * per) * dimCur;
 
       const s = Math.max(.6, size[i] * per);
       cCore.fillStyle = `rgba(${cr | 0},${cg | 0},${cb2 | 0},${a.toFixed(3)})`;
