@@ -414,6 +414,8 @@
       el.style.transform = el.classList.contains("panel--center")
         ? `translate(-50%, calc(-50% + ${dy.toFixed(1)}px))`
         : `translateY(calc(-50% + ${dy.toFixed(1)}px))`;
+      if (op > .3) el.classList.add("is-in");
+      else if (op < .04) el.classList.remove("is-in");
     }
 
     /* ── vẽ hạt ── */
