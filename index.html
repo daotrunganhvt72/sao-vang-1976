@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAO VÀNG · 1976 — Lịch sử qua dữ liệu</title>
-<meta name="description" content="Scrollytelling: hạt sáng biến hình kể câu chuyện Kỳ họp thứ nhất, Quốc hội khóa VI (24/6 – 3/7/1976) — từ hai Nhà nước đến một tên gọi.">
+<meta name="description" content="Scrollytelling 3D: hạt sáng biến hình kể câu chuyện Kỳ họp thứ nhất, Quốc hội khóa VI (24/6 – 3/7/1976) — từ hai Nhà nước đến một tên gọi.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230b0906'/%3E%3Cpath d='M50 16l7.7 23.7h24.9L62.4 54l7.7 23.7L50 63.4 29.9 77.7l7.7-23.7L17.4 39.7h24.9z' fill='%23e2b13c'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +12,13 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<!-- ── Ánh sáng nền ── -->
+<div class="light light--a" aria-hidden="true"></div>
+<div class="light light--b" aria-hidden="true"></div>
+<div class="light light--c" aria-hidden="true"></div>
+<div class="rays" aria-hidden="true"></div>
+<div class="objglow" id="objGlow" aria-hidden="true"></div>
 
 <div class="noise" aria-hidden="true"></div>
 <div class="vignette" aria-hidden="true"></div>
@@ -27,16 +34,51 @@
   <span id="chipNo">01</span><i></i><span id="chipName">KHỞI ĐẦU</span>
 </div>
 
-<!-- Sân khấu ghim giữa: 2 lớp canvas (glow + nét) -->
+<!-- Sân khấu hạt (ghim giữa) -->
 <div class="stage" aria-hidden="true">
   <canvas id="fx"></canvas>
   <canvas id="core"></canvas>
 </div>
 
-<!-- Các tấm chữ trượt theo tiến độ -->
+<!-- Thẻ nổi 3D theo cảnh -->
+<div class="deck" id="deck" aria-hidden="true">
+  <figure class="card pos-bl" data-scene="1" data-rot="-2.5">
+    <img src="assets/img/tank_30_4_1975.jpg" alt="Xe tăng tiến vào Dinh Độc Lập 30/4/1975" loading="lazy">
+    <figcaption class="mono">30·4·1975 — DINH ĐỘC LẬP · WIKIMEDIA</figcaption>
+  </figure>
+  <figure class="card pos-bl2" data-scene="1" data-rot="2">
+    <img src="assets/img/mittinh_5_1975.jpg" alt="Mít tinh mừng miền Nam giải phóng, Hà Nội 7/5/1975" loading="lazy">
+    <figcaption class="mono">7·5·1975 — MÍT TIN HÀ NỘI · NHÂN DÂN</figcaption>
+  </figure>
+
+  <figure class="card pos-br" data-scene="3" data-rot="-2">
+    <img src="assets/img/vote_woman.jpg" alt="Cử tri bỏ phiếu 25/4/1976" loading="lazy">
+    <figcaption class="mono">LÁ PHIẾU ĐẦU TIÊN · DANVIET</figcaption>
+  </figure>
+  <figure class="card pos-br2" data-scene="3" data-rot="2.4">
+    <img src="assets/img/qhb5.jpg" alt="Chiến sĩ bỏ phiếu cạnh bia ngày bầu cử 25/4/1976" loading="lazy">
+    <figcaption class="mono">BIA “NGÀY BẦU CỬ 25·4·1976” · NHÂN DÂN</figcaption>
+  </figure>
+
+  <figure class="card pos-br" data-scene="4" data-rot="2.2">
+    <img src="assets/img/hoi_truong_ba_dinh.jpg" alt="Hội trường Ba Đình, Hà Nội" loading="lazy">
+    <figcaption class="mono">HỘI TRƯỜNG BA ĐÌNH · WIKIMEDIA</figcaption>
+  </figure>
+  <figure class="card pos-br2" data-scene="4" data-rot="-2">
+    <img src="assets/img/session_1976.jpg" alt="Quốc huy trên bục phát biểu, kỳ họp thứ nhất" loading="lazy">
+    <figcaption class="mono">BỤC PHÁT BIỂU, KỲ HỌP THỨ NHẤT · TTXVN</figcaption>
+  </figure>
+
+  <figure class="card pos-bwl" data-scene="5" data-rot="-1.6">
+    <img src="assets/img/bieuquyet_1976.jpg" alt="Quốc hội biểu quyết thông qua Quốc kỳ, Quốc huy, Quốc ca" loading="lazy">
+    <figcaption class="mono">BIỂU QUYẾT QUỐC KỲ, QUỐC HUY, QUỐC CA · NHÂN DÂN</figcaption>
+  </figure>
+</div>
+
+<!-- Các tấm chữ -->
 <div class="panels" id="panels">
 
-  <section class="panel" data-scene="0">
+  <section class="panel panel--center" data-scene="0">
     <p class="panel__kicker mono">SCROLLYTELLING · TƯ LIỆU 1975 – 1976</p>
     <h1 class="panel__title">MỘT<br>NƯỚC</h1>
     <p class="panel__lead">Kỳ họp thứ nhất, Quốc hội khóa VI — Quốc hội đầu tiên của nước
@@ -55,15 +97,9 @@
       <div><b>02</b><span>miền Nam — Bắc</span></div>
       <div><b>01</b><span>nguyện vọng</span></div>
     </div>
-    <div class="panel__photos">
-      <figure><img src="assets/img/tank_30_4_1975.jpg" alt="Xe tăng tiến vào Dinh Độc Lập 30/4/1975" loading="lazy">
-        <figcaption>30·4·1975 — Dinh Độc Lập · Wikimedia</figcaption></figure>
-      <figure><img src="assets/img/mittinh_5_1975.jpg" alt="Mít tinh mừng miền Nam giải phóng, Hà Nội 7/5/1975" loading="lazy">
-        <figcaption>7·5·1975 — Mít tinh Hà Nội · Nhân Dân</figcaption></figure>
-    </div>
   </section>
 
-  <section class="panel" data-scene="2">
+  <section class="panel panel--right" data-scene="2">
     <p class="panel__kicker mono">02 · SÀI GÒN, 15 – 21/11/1975</p>
     <h2>Hiệp thương chọn<br>một ngày chung</h2>
     <p class="panel__body">“Cần tổ chức sớm cuộc Tổng tuyển cử trên toàn bộ lãnh thổ Việt Nam
@@ -94,15 +130,9 @@
       <div class="mchart__row"><span class="mchart__name">Miền Nam</span><div class="mchart__track"><div class="mchart__fill" style="--w:98.59%"></div></div><span class="mchart__val mono">98,59%</span></div>
       <p class="mchart__src mono">VĂN KIỆN QUỐC HỘI TOÀN TẬP · TẬP 5</p>
     </div>
-    <div class="panel__photos">
-      <figure><img src="assets/img/vote_woman.jpg" alt="Cử tri bỏ phiếu 25/4/1976" loading="lazy">
-        <figcaption>Lá phiếu đầu tiên · Danviet</figcaption></figure>
-      <figure><img src="assets/img/qhb5.jpg" alt="Chiến sĩ bỏ phiếu cạnh bia ngày bầu cử 25/4/1976" loading="lazy">
-        <figcaption>Bia “Ngày bầu cử 25·4·1976” · Nhân Dân</figcaption></figure>
-    </div>
   </section>
 
-  <section class="panel" data-scene="4">
+  <section class="panel panel--right" data-scene="4">
     <p class="panel__kicker mono">04 · HÀ NỘI, 24/6/1976</p>
     <h2>Khai mạc tại<br>Hội trường Ba Đình</h2>
     <p class="panel__body">“Kỳ họp Quốc hội lần này là một cái mốc trong lịch sử phát triển
@@ -135,13 +165,9 @@
       <div><b>05</b><span>điều về biểu tượng</span></div>
       <div><b>02·07</b><span>1976</span></div>
     </div>
-    <div class="panel__photos panel__photos--wide">
-      <figure><img src="assets/img/bieuquyet_1976.jpg" alt="Quốc hội biểu quyết thông qua Quốc kỳ, Quốc huy, Quốc ca tại kỳ họp thứ nhất" loading="lazy">
-        <figcaption>Quốc hội biểu quyết Quốc kỳ, Quốc huy, Quốc ca — kỳ họp thứ nhất · Nhân Dân</figcaption></figure>
-    </div>
   </section>
 
-  <section class="panel" data-scene="6">
+  <section class="panel panel--right" data-scene="6">
     <p class="panel__kicker mono">06 · QUỐC HUY</p>
     <h2>Ngôi sao giữa<br>bông lúa và bánh xe</h2>
     <p class="panel__body">“Quốc huy hình tròn, ở giữa có ngôi sao vàng năm cánh, chung quanh
@@ -152,18 +178,14 @@
       <div><b>TIẾN QUÂN CA</b><span>quốc ca</span></div>
       <div><b>TP.HCM</b><span>tên mới của Sài Gòn – Gia Định</span></div>
     </div>
-    <div class="panel__photos panel__photos--wide">
-      <figure><img src="assets/img/session_1976.jpg" alt="Quốc huy trên bục phát biểu tại kỳ họp thứ nhất, Quốc hội khóa VI" loading="lazy">
-        <figcaption>Quốc huy tại kỳ họp thứ nhất, Quốc hội khóa VI · TTXVN</figcaption></figure>
-    </div>
   </section>
 
-  <section class="panel" data-scene="7">
+  <section class="panel panel--center" data-scene="7">
     <p class="panel__kicker mono">50 NĂM SAU</p>
     <h1 class="panel__title panel__title--sm panel__title--gold">MỘT CÁI TÊN,<br>ĐI SUỐT HÀNH TRÌNH</h1>
     <p class="panel__lead">Từ 24/6/1976 — nhiệm kỳ khóa VI đến 23/6/1981 — đến Hiến pháp 1980
     và đến hôm nay: đất nước chưa bao giờ có được cơ đồ, tiềm lực, vị thế như ngày nay.</p>
-    <div class="panel__stats">
+    <div class="panel__stats panel__stats--center">
       <div><b>50</b><span>năm</span></div>
       <div><b>6</b><span>nghị quyết khai sinh</span></div>
       <div><b>1</b><span>nước Việt Nam</span></div>

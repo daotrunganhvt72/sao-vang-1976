@@ -119,10 +119,10 @@
 
   /* ═══════════ 8 CẢNH ═══════════ */
   const SCENES = [
-    { name: "KHỞI ĐẦU", rot: .10, make: (rng, n) =>
+    { name: "KHỞI ĐẦU", objX: .5, amp: .5, rot: .10, make: (rng, n) =>
         starPts(rng, 0, 0, .58, .235, 0, n, .55, C.gold, C.gold2) },
 
-    { name: "HAI NHÀ NƯỚC", rot: 0, make: (rng, n) => {
+    { name: "HAI NHÀ NƯỚC", objX: .585, amp: .3, rot: 0, make: (rng, n) => {
         const h = Math.floor(n / 2);
         const A = ringPts(rng, -.52, 0, .34, h, .05, C.gold2, .3);
         const B = ringPts(rng, .52, 0, .34, n - h, .05, C.red, .3);
@@ -132,7 +132,7 @@
         return { pts, col };
       } },
 
-    { name: "HIỆP THƯƠNG", rot: 0, make: (rng, n) => {
+    { name: "HIỆP THƯƠNG", objX: .415, amp: .18, rot: 0, make: (rng, n) => {
         const pts = new Float32Array(n * 2), col = new Float32Array(n * 3);
         for (let i = 0; i < n; i++) {
           const cl = i % 22;
@@ -146,11 +146,11 @@
         return { pts, col };
       } },
 
-    { name: "TỔNG TUYỂN CỬ", rot: 0, make: (rng, n) => polyBallot(rng, n) },
+    { name: "TỔNG TUYỂN CỬ", objX: .585, amp: .25, rot: 0, make: (rng, n) => polyBallot(rng, n) },
 
-    { name: "KHAI MẠC", rot: 0, make: (rng, n) => hallShape(rng, n) },
+    { name: "KHAI MẠC", objX: .415, amp: .3, rot: 0, make: (rng, n) => hallShape(rng, n) },
 
-    { name: "QUỐC KỲ", rot: 0, make: (rng, n) => {
+    { name: "QUỐC KỲ", objX: .585, amp: .18, rot: 0, make: (rng, n) => {
         const field = Math.round(n * .74), st = n - field;
         const F = rectFillPts(rng, -.92, -.4, .52, .4, field, C.redD);
         const S = starPts(rng, -.2, 0, .2, .082, 0, st, .5, C.gold, C.bright);
@@ -160,10 +160,10 @@
         return { pts, col };
       } },
 
-    { name: "QUỐC HUY", rot: .05, make: (rng, n) =>
+    { name: "QUỐC HUY", objX: .415, amp: .3, rot: .05, make: (rng, n) =>
         emblemShape(rng, n) },
 
-    { name: "MỘT CÁI TÊN", rot: 0, make: (rng, n) => textShape("1976", rng, n) }
+    { name: "MỘT CÁI TÊN", objX: .5, amp: .1, rot: 0, make: (rng, n) => textShape("1976", rng, n) }
   ];
 
   function polyBallot(rng, n) {
@@ -335,6 +335,13 @@
     });
   }
   buildShapes();
+  // chiều sâu Z cho từng hình (dày mỏng khác nhau → cảm giác 3D)
+  shapes.forEach((sh, idx) => {
+    const rz = mulberry32(7000 + idx);
+    const zz = new Float32Array(N);
+    for (let i = 0; i < N; i++) zz[i] = (rz() + rz() - 1) * .1;
+    sh.zz = zz;
+  });
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(() => { shapes[7] = SCENES[7].make(mulberry32(4177 + 7), N); });
   }
@@ -347,7 +354,9 @@
       cv.getContext("2d").setTransform(DPR, 0, 0, DPR, 0, 0);
     }
     R = Math.min(W, H) * (isMobile() ? .3 : .33);
-    CX = isMobile() ? W * .5 : W * .585;
+    CX = W * .5; CY = H * .5;
+    const glowEl = $("#objGlow");
+    if (glowEl) { glowEl.style.width = glowEl.style.height = (R * 3) + "px"; }
     CY = isMobile() ? H * .40 : H * .5;
   }
   resize(); addEventListener("resize", resize);
@@ -368,6 +377,8 @@
 
   /* ── panels & chip ── */
   const panels = $$(".panel");
+  const cards = $$(".card");
+  cards.forEach((c, i) => c.dataset.sc = c.dataset.scene);
   const chipNo = $("#chipNo"), chipName = $("#chipName"), pFill = $("#pFill");
   let lastChip = -1;
   const smooth = t => t * t * (3 - 2 * t);
@@ -379,6 +390,7 @@
 
   function frame(now) {
     requestAnimationFrame(frame);
+    try {
     const dt = Math.min(.05, (now - last) / 1000); last = now; time += dt;
 
     const k = 1 - Math.exp(-dt * 7.5);
@@ -418,12 +430,22 @@
       else if (op < .04) el.classList.remove("is-in");
     }
 
-    /* ── vẽ hạt ── */
+    /* ── mô hình: vị trí + nghiêng 3D ── */
+    const objXc = SCENES[ki].objX + (SCENES[k2].objX - SCENES[ki].objX) * e;
+    const CXc = W * objXc;
+    const CYc = CY;
+    const ampA = SCENES[ki].amp, ampB = SCENES[k2].amp;
+    const angA = ampA * Math.sin(time * .4 + ki * 1.3) + time * .02;
+    const angB = ampB * Math.sin(time * .4 + k2 * 1.3) + time * .02;
+    const glow = $("#objGlow");
+    if (glow) { glow.style.left = (CXc - R * 1.45) + "px"; glow.style.top = (CY - R * 1.45) + "px"; }
+
+    /* ── vẽ hạt (có chiều sâu Z + phối cảnh) ── */
     const A = shapes[ki].pts, B = shapes[k2].pts;
+    const ZA = shapes[ki].zz, ZB = shapes[k2].zz;
     const cA = shapes[ki].col, cB = shapes[k2].col;
-    const angA = time * SCENES[ki].rot, angB = time * SCENES[k2].rot;
     const ca = Math.cos(angA), sa = Math.sin(angA), cb = Math.cos(angB), sb = Math.sin(angB);
-    const ox = mxs * .04, oy = mys * .03;
+    const ox = mxs * .05, oy = mys * .04;
     const breathe = 1 + Math.sin(time * .55) * .012;
 
     cCore.clearRect(0, 0, W, H);
@@ -434,32 +456,52 @@
     for (let i = 0; i < N; i++) {
       const d = hash[i] * .22;
       const t = smooth(clamp01((e - d) / (1 - d)));
-      let ax = A[i * 2], ay = A[i * 2 + 1];
-      let bx = B[i * 2], by = B[i * 2 + 1];
-      // xoay riêng từng hình
-      let rx = ax * ca - ay * sa, ry = ax * sa + ay * ca;
-      let rx2 = bx * cb - by * sb, ry2 = bx * sb + by * cb;
-      let X = (rx + (rx2 - rx) * t);
-      let Y = (ry + (ry2 - ry) * t) * breathe;
-      // dao động sống
-      X += Math.sin(time * .7 + phase[i]) * .007;
-      Y += Math.cos(time * .62 + phase[i] * 1.7) * .007;
+      const ax = A[i * 2], ay = A[i * 2 + 1], az = ZA[i];
+      const bx = B[i * 2], by = B[i * 2 + 1], bz = ZB[i];
+      // quay quanh trục Y (chiều sâu)
+      const rx = ax * ca - az * sa,  zr = ax * sa + az * ca;
+      const rx2 = bx * cb - bz * sb, zr2 = bx * sb + bz * cb;
+      const X = rx + (rx2 - rx) * t;
+      const Z = zr + (zr2 - zr) * t;
+      const Y = (ay + (by - ay) * t) * breathe
+              + Math.cos(time * .62 + phase[i] * 1.7) * .007;
+      const wob = Math.sin(time * .7 + phase[i]) * .007;
 
-      const px = CX + (X + ox) * R;
-      const py = CY + (Y + oy) * R;
+      const per = 1.9 / (1.9 + Z);          // phối cảnh
+      const px = CXc + (X + wob + ox) * R * per;
+      const py = CYc + (Y + oy) * R * per;
 
       const cr = cA[i * 3] + (cB[i * 3] - cA[i * 3]) * t;
       const cg = cA[i * 3 + 1] + (cB[i * 3 + 1] - cA[i * 3 + 1]) * t;
       const cb2 = cA[i * 3 + 2] + (cB[i * 3 + 2] - cA[i * 3 + 2]) * t;
       const tw = .72 + .28 * Math.sin(time * 1.4 + phase[i] * 3);
+      const a = .9 * tw * (.65 + .35 * per);
 
-      const s = size[i];
-      cCore.fillStyle = `rgba(${cr | 0},${cg | 0},${cb2 | 0},${(.85 * tw).toFixed(3)})`;
+      const s = Math.max(.6, size[i] * per);
+      cCore.fillStyle = `rgba(${cr | 0},${cg | 0},${cb2 | 0},${a.toFixed(3)})`;
       cCore.beginPath(); cCore.arc(px, py, s, 0, 7); cCore.fill();
 
-      cFx.fillStyle = `rgba(${cr | 0},${cg | 0},${cb2 | 0},${(.12 * tw).toFixed(3)})`;
-      cFx.beginPath(); cFx.arc(px, py, s * 3.2, 0, 7); cFx.fill();
+      cFx.fillStyle = `rgba(${cr | 0},${cg | 0},${cb2 | 0},${(a * .16).toFixed(3)})`;
+      cFx.beginPath(); cFx.arc(px, py, s * 3.4, 0, 7); cFx.fill();
     }
+
+    /* ── thẻ nổi 3D ── */
+    if (W > 860) {
+      for (let i = 0; i < cards.length; i++) {
+        const el = cards[i], sc = +el.dataset.sc;
+        const fi = sc - x;
+        const inP = smooth(clamp01((.62 - fi) / .3));
+        const outP = smooth(clamp01((-.62 - fi) / .28));
+        const op = inP * (1 - outP);
+        el.style.opacity = op.toFixed(3);
+        el.style.visibility = op > .02 ? "visible" : "hidden";
+        if (op > .02) {
+          const fl = Math.sin(time * .9 + i * 2.1) * 7;
+          el.style.transform = `translate3d(0,${fl.toFixed(1)}px,0) rotateX(${(-mys * 10).toFixed(2)}deg) rotateY(${(mxs * 14).toFixed(2)}deg) rotate(${el.dataset.rot}deg)`;
+        }
+      }
+    }
+  } catch (err) { window.__ERR = err.message + " :: " + String(err.stack).split("\n")[1]; }
   }
 
   if (reduced) {
